@@ -9,7 +9,6 @@ mod base64whenjson;
 use crate::{keys::Keys };
 mod keys;
 mod ffi;
-mod types;
 use num::{self, ToPrimitive};
 #[macro_use]
 extern crate num_derive;
