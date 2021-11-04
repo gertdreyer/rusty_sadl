@@ -9,18 +9,14 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build:
-
+  build-linux:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
       with:
         submodules: recursive
     - name: Build Linux
       run: cargo build --verbose --release
-    - name: Build Windows
-      run: cargo build --verbose --release  --target x86_64-pc-windows-gnu
     - name: Generate Headers
       run: cargo test --features c-headers -- generate_headers
     - name: Archive production artifacts
@@ -31,4 +27,22 @@ jobs:
           examples/
           librusty_sadl.h
           target/release/librusty_sadl.so
+            build-linux:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: Build Windows
+      run: cargo build --verbose --release 
+    - name: Generate Headers
+      run: cargo test --features c-headers -- generate_headers
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: release-linux
+        path: |
+          examples/
+          librusty_sadl.h
           target/release/rusty_sadl.dll
