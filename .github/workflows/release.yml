@@ -24,7 +24,7 @@ jobs:
       with:
         name: release-linux
         path: |
-          examples/
+          src/examples/
           librusty_sadl.h
           target/release/librusty_sadl.so
             build-linux:
@@ -43,6 +43,6 @@ jobs:
       with:
         name: release-windows
         path: |
-          examples/
+          src/examples/
           librusty_sadl.h
           target/release/rusty_sadl.dll
