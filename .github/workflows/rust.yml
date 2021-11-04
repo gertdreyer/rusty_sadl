@@ -21,4 +21,4 @@ jobs:
     - name: Build
       run: cargo build --verbose
     - name: Generate Headers
-      run: cargo test --features c-headers -- generate_headers --verbose
+      run: cargo test --features c-headers -- generate_headers
