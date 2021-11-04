@@ -19,15 +19,17 @@ jobs:
       run: cargo build --verbose --release
     - name: Generate Headers
       run: cargo test --features c-headers -- generate_headers
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v2
+    - name: Upload production artifacts to release
+      uses: svenstaro/upload-release-action@v2
       with:
-        name: release-linux
-        path: |
-          src/examples/
-          librusty_sadl.h
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: |
           target/release/librusty_sadl.so
-            build-linux:
+          src/examples/*
+        asset_name: linux-release
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: ""
   build-windows:
     runs-on: windows-latest
     steps:
@@ -38,11 +40,14 @@ jobs:
       run: cargo build --verbose --release 
     - name: Generate Headers
       run: cargo test --features c-headers -- generate_headers
-    - name: Archive production artifacts
-      uses: actions/upload-artifact@v2
+    - name: Upload production artifacts to release
+      uses: svenstaro/upload-release-action@v2
       with:
-        name: release-windows
-        path: |
-          src/examples/
-          librusty_sadl.h
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: |
           target/release/rusty_sadl.dll
+          src/examples/*
+        asset_name: windows-release
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: ""
