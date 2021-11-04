@@ -23,9 +23,16 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: |
-          target/release/librusty_sadl.so
-          src/examples/*
+        file: target/release/librusty_sadl.so
+        asset_name: linux-release
+        tag: ${{ github.ref }}
+        overwrite: true
+        body: ""
+    - name: Upload examples to release
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        file: src/examples/*
         asset_name: linux-release
         tag: ${{ github.ref }}
         overwrite: true
@@ -44,9 +51,7 @@ jobs:
       uses: svenstaro/upload-release-action@v2
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: |
-          target/release/rusty_sadl.dll
-          src/examples/*
+        file: target/release/rusty_sadl.dll
         asset_name: windows-release
         tag: ${{ github.ref }}
         overwrite: true
