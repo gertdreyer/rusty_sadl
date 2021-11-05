@@ -1,6 +1,6 @@
 // cargo test --features c-headers -- generate_headers
 // gcc main.c -L . -lrusty_sadl  -Wl,-rpath '-Wl,$ORIGIN'
-#include "rusty_sadl.h"
+#include "librusty_sadl.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
