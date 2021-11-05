@@ -1,18 +1,15 @@
 use chrono::{Date, DateTime, NaiveDate, Utc};
 use rsa::{PaddingScheme, PublicKey};
-use std::{convert::TryInto, error::Error, mem};
 use serde::Serialize;
+use std::{convert::TryInto, error::Error, mem};
 mod base64whenjson;
 
-
-
-use crate::{keys::Keys };
-mod keys;
+use crate::keys::Keys;
 mod ffi;
+mod keys;
 use num::{self, ToPrimitive};
 #[macro_use]
 extern crate num_derive;
-
 
 #[derive(Debug, Copy, Clone)]
 #[repr(packed)]
@@ -55,9 +52,8 @@ pub struct LicenceData {
     pub valid_from: Option<DateTime<Utc>>,
     pub valid_to: Option<DateTime<Utc>>,
     #[serde(with = "base64whenjson")]
-    pub wi_image: Vec<u8>,
+    pub image: Vec<u8>,
 }
-
 #[derive(Debug)]
 #[repr(C)]
 pub struct BarcodeLayout {
@@ -311,7 +307,7 @@ pub fn parse_decrypted(decrypted_data: Vec<u8>) -> Result<LicenceData, Box<dyn E
         birth_date: parse_date_from_slice(&datablock2_fields[5]),
         valid_from: parse_date_from_slice(&datablock2_fields[6]),
         valid_to: parse_date_from_slice(&datablock2_fields[7]),
-        wi_image: datablock3.to_vec(),
+        image: datablock3.to_vec(),
     };
 
     Ok(data)
@@ -319,17 +315,20 @@ pub fn parse_decrypted(decrypted_data: Vec<u8>) -> Result<LicenceData, Box<dyn E
 
 fn parse_date_from_slice(slice: &[u8]) -> Option<DateTime<Utc>> {
     if slice.len() == 8 {
-        Some(Date::<Utc>::from_utc(
-            NaiveDate::from_ymd(
-                slice[0].to_i32()? * 1000
-                    + slice[1].to_i32()? * 100
-                    + slice[2].to_i32()? * 10
-                    + slice[3].to_i32()?,
-                (slice[4] * 10 + slice[5]).into(),
-                (slice[6] * 10 + slice[7]).into(),
-            ),
-            Utc,
-        ).and_hms(0, 0, 0))
+        Some(
+            Date::<Utc>::from_utc(
+                NaiveDate::from_ymd(
+                    slice[0].to_i32()? * 1000
+                        + slice[1].to_i32()? * 100
+                        + slice[2].to_i32()? * 10
+                        + slice[3].to_i32()?,
+                    (slice[4] * 10 + slice[5]).into(),
+                    (slice[6] * 10 + slice[7]).into(),
+                ),
+                Utc,
+            )
+            .and_hms(0, 0, 0),
+        )
     } else {
         None
     }

@@ -434,7 +434,7 @@ dependencies = [
 
 [[package]]
 name = "rusty_sadl"
-version = "0.1.0"
+version = "0.1.2"
 dependencies = [
  "base64",
  "chrono",
