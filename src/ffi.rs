@@ -1,6 +1,6 @@
 use ::safer_ffi::prelude::*;
 
-use crate::rusty_sadl::{decrypt_barcode, parse_decrypted};
+use crate::{decrypt_barcode, parse_decrypted};
 
 #[ffi_export]
 fn free_buf(vec: repr_c::Vec<u8>) {
