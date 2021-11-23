@@ -334,10 +334,10 @@ fn parse_date_from_slice(slice: &[u8]) -> Option<DateTime<Utc>> {
     }
 }
 
-pub fn decrypt_and_parse(barcode_data: &[u8; 720]) -> Result<LicenceData, Box<dyn Error>> {
+pub fn decrypt_and_parse(barcode_data: &[u8; 720]) -> Result<LicenceData, String> {
     let decrypted = decrypt_barcode(barcode_data.to_vec())?;
     return match parse_decrypted(decrypted) {
         Ok(data) => Ok(data),
-        Err(err) => Err(err),
+        Err(err) => Err(err.to_string()),
     };
 }
